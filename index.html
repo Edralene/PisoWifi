@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCash WiFi Payment</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #005ce6; color: white; text-align: center; padding: 20px; }
+        .container { background: white; color: #333; border-radius: 15px; padding: 20px; max-width: 350px; margin: auto; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .promo-card { border: 2px solid #ddd; border-radius: 10px; margin: 10px 0; padding: 15px; cursor: pointer; transition: 0.3s; }
+        .promo-card:hover { border-color: #005ce6; background: #f0f7ff; }
+        .promo-card.selected { border-color: #27ae60; background: #eafff2; }
+        .qr-section { display: none; margin-top: 20px; }
+        img.qr-code { width: 200px; height: 200px; margin: 10px 0; border: 2px solid #333; }
+        .voucher-display { display: none; background: #27ae60; color: white; padding: 20px; border-radius: 10px; margin-top: 20px; font-size: 24px; font-weight: bold; }
+        button { background: #005ce6; color: white; border: none; padding: 12px 20px; border-radius: 5px; width: 100%; font-size: 16px; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>Juan WiFi</h1>
+    <p>Mabilis na internet sa halagang abot-kaya!</p>
+
+    <div class="container">
+        <div id="step-1">
+            <h3>Pili ng Promo:</h3>
+            <div class="promo-card" onclick="selectPromo('P5', '1 Hour')"><b>₱5.00</b> - 1 Oras</div>
+            <div class="promo-card" onclick="selectPromo('P10', '3 Hours')"><b>₱10.00</b> - 3 Oras</div>
+            <div class="promo-card" onclick="selectPromo('P20', '24 Hours')"><b>₱20.00</b> - 1 Araw</div>
+            <button onclick="showQR()">Pay via GCash</button>
+        </div>
+
+        <div id="step-2" class="qr-section">
+            <h3>I-scan ang QR Code:</h3>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=GCash-Number-Here" class="qr-code">
+            <p>Bayaran ang <b id="selected-price">₱0</b> para sa <b id="selected-time">---</b></p>
+            <button style="background:#27ae60;" onclick="simulatePayment()">I've Paid Already</button>
+        </div>
+
+        <div id="step-3" class="voucher-display">
+            <small>Ang iyong WiFi Code:</small><br>
+            <span id="voucher-code">WIFI-WAIT...</span>
+            <p style="font-size: 12px;">I-copy at i-paste ito sa login page.</p>
+        </div>
+    </div>
+
+    <script>
+        let price = "";
+        let time = "";
+
+        function selectPromo(p, t) {
+            price = p;
+            time = t;
+            document.querySelectorAll('.promo-card').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function showQR() {
+            if(!price) return alert("Pili ka muna ng promo!");
+            document.getElementById('selected-price').innerText = price;
+            document.getElementById('selected-time').innerText = time;
+            document.getElementById('step-1').style.display = 'none';
+            document.getElementById('step-2').style.display = 'block';
+        }
+
+        function simulatePayment() {
+            alert("Verifying payment... (Simulated)");
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-3').style.display = 'block';
+            
+            // Random Code Generator (Simulating MikroTik API response)
+            const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+            document.getElementById('voucher-code').innerText = randomCode;
+        }
+    </script>
+
+</body>
+</html>
