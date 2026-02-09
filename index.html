@@ -5,59 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WiFi via GCash - Edralene B.</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #005ce6; color: white; text-align: center; padding: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #005ce6; color: white; text-align: center; padding: 20px; margin: 0; }
         .container { background: white; color: #333; border-radius: 15px; padding: 20px; max-width: 350px; margin: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .header { background: #005ce6; color: white; padding: 10px; border-radius: 10px; margin-bottom: 20px; }
-        .promo-card { border: 2px solid #eee; border-radius: 10px; margin: 10px 0; padding: 15px; cursor: pointer; transition: 0.2s; text-align: left; position: relative; }
+        .header { background: #005ce6; color: white; padding: 10px; border-radius: 10px; margin-bottom: 20px; font-weight: bold; }
+        
+        .promo-card { border: 2px solid #eee; border-radius: 10px; margin: 10px 0; padding: 15px; cursor: pointer; transition: 0.2s; text-align: left; }
         .promo-card:hover { border-color: #005ce6; }
-        .promo-card.selected { border-color: #27ae60; background: #eafff2; }
+        .promo-card.selected { border-color: #27ae60; background: #eafff2; border-width: 2px; }
         .promo-card b { font-size: 1.2em; color: #005ce6; }
         
-        .qr-section { display: none; margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 20px; }
-        .qr-frame { border: 4px solid #005ce6; border-radius: 10px; display: inline-block; padding: 10px; margin-bottom: 10px; }
-        .qr-code { width: 220px; height: 220px; }
-        
-        .gcash-info { background: #f0f7ff; padding: 10px; border-radius: 8px; font-size: 0.9em; margin-bottom: 15px; border-left: 5px solid #005ce6; }
-        .voucher-display { display: none; background: #27ae60; color: white; padding: 20px; border-radius: 10px; margin-top: 20px; font-size: 24px; font-weight: bold; }
+        .qr-section { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc; }
+        .gcash-info { background: #f0f7ff; padding: 15px; border-radius: 8px; font-size: 0.95em; margin-bottom: 15px; border-left: 5px solid #005ce6; text-align: left; }
         
         .btn-pay { background: #005ce6; color: white; border: none; padding: 15px; border-radius: 30px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .btn-verify { background: #27ae60; color: white; border: none; padding: 15px; border-radius: 30px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-fb { background: #1877F2; color: white; border: none; padding: 15px; border-radius: 30px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; text-decoration: none; display: inline-block; box-sizing: border-box; }
+        
+        .step-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; display: block; }
     </style>
 </head>
 <body>
 
     <h2>JuanConnect WiFi</h2>
-    <p>Powered by MikroTik & GCash</p>
+    <p>Simple. Mabilis. Abot-kaya.</p>
 
     <div class="container">
         <div id="step-1">
-            <div class="header">PUMILI NG PROMO</div>
-            <div class="promo-card" onclick="selectPromo('5', '1 Hour')"><b>₱5.00</b><br><small>Internet for 1 Hour</small></div>
-            <div class="promo-card" onclick="selectPromo('10', '3 Hours')"><b>₱10.00</b><br><small>Internet for 3 Hours</small></div>
-            <div class="promo-card" onclick="selectPromo('20', '24 Hours')"><b>₱20.00</b><br><small>Internet for 24 Hours</small></div>
-            <button class="btn-pay" onclick="showQR()">NEXT: PAY VIA GCASH</button>
+            <span class="step-label">Step 1: Pili ng Promo</span>
+            <div class="promo-card" onclick="selectPromo('5', '1 Hour')"><b>₱5.00</b><br><small>Valid for 1 Hour</small></div>
+            <div class="promo-card" onclick="selectPromo('10', '3 Hours')"><b>₱10.00</b><br><small>Valid for 3 Hours</small></div>
+            <div class="promo-card" onclick="selectPromo('20', '24 Hours')"><b>₱20.00</b><br><small>Valid for 24 Hours</small></div>
+            <button class="btn-pay" onclick="showQR()">NEXT: PAYMENT</button>
         </div>
 
         <div id="step-2" class="qr-section">
+            <span class="step-label">Step 2: Bayad at Verification</span>
             <div class="gcash-info">
                 <strong>GCash Name:</strong> Edralene B.<br>
-                <strong>GCash Number:</strong> 09613016594
+                <strong>Number:</strong> 09613016594<br>
+                <strong>Amount:</strong> <span id="selected-price" style="color:#005ce6; font-weight:bold;">₱0</span>
             </div>
             
-            <div class="qr-frame">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=GCash-09613016594-EdraleneB" class="qr-code" alt="GCash QR">
-            </div>
+            <p style="font-size: 13px; color: #444;">1. Mag-send ng bayad sa GCash.<br>2. I-screenshot ang <b>Receipt</b>.<br>3. I-click ang button sa ibaba para i-send ang screenshot sa FB ko.</p>
             
-            <p>I-scan ang QR at magbayad ng <br><b id="selected-price" style="color:#005ce6; font-size: 1.5em;">₱0</b></p>
-            <p style="font-size: 11px; color: #666;">Kapag tapos na, i-click ang button sa ibaba:</p>
-            <button class="btn-verify" onclick="simulatePayment()">VERIFY PAYMENT</button>
-        </div>
-
-        <div id="step-3" class="voucher-display">
-            <small>ITO ANG IYONG CODE:</small><br>
-            <span id="voucher-code">------</span>
-            <p style="font-size: 12px; margin-top: 10px;">I-type ang code na ito sa login page para magka-internet.</p>
-            <button class="btn-pay" onclick="window.location.reload()">BUY AGAIN</button>
+            <a href="https://m.me/edralene.balase" target="_blank" class="btn-fb">
+                SEND RECEIPT TO FB
+            </a>
+            
+            <p style="font-size: 11px; color: #888; margin-top: 10px;">Ise-send ko ang WiFi Code sa FB Messenger mo pagkatapos ma-verify.</p>
+            <button onclick="window.location.reload()" style="background:none; border:none; color:#005ce6; cursor:pointer; font-size:12px;">« Back to Promos</button>
         </div>
     </div>
 
@@ -77,18 +72,6 @@
             document.getElementById('selected-price').innerText = "₱" + price + ".00";
             document.getElementById('step-1').style.display = 'none';
             document.getElementById('step-2').style.display = 'block';
-        }
-
-        function simulatePayment() {
-            // DITO PAPASOK ANG LOGIC: Sa totoong system, dapat i-verify muna ang reference number.
-            alert("Payment Verified for Edralene B.\nGenerating your " + time + " WiFi code...");
-            
-            document.getElementById('step-2').style.display = 'none';
-            document.getElementById('step-3').style.display = 'block';
-            
-            // Random Code Generator (Simulated)
-            const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-            document.getElementById('voucher-code').innerText = randomCode;
         }
     </script>
 
